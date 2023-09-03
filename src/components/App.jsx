@@ -74,7 +74,7 @@ export const App = () => {
               webformatURL,
             })
           );
-          setPhotos([...photos, ...arrPhotos]);
+          setPhotos(prevPhotos => [...prevPhotos, ...arrPhotos]);
           setLoading(false);
           setBtnLoadMore(Math.ceil(totalHits / perPage) > page);
         }
