@@ -23,37 +23,66 @@ export const App = () => {
     setPage(1);
   };
 
-  const fetchPage = async (search, page) => {
-    setLoading(true);
-    try {
-      console.log('RENDER NEWPAGE');
-      const { totalHits, hits } = await fetchPhoto(search, page, perPage);
-      if (!hits.length) {
-        setBtnLoadMore(false);
-        toast.warn(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        setLoading(false);
-      } else {
-        const arrPhotos = hits.map(
-          ({ id, webformatURL, largeImageURL, tags }) => ({
-            id,
-            largeImageURL,
-            tags,
-            webformatURL,
-          })
-        );
-        setPhotos([...photos, ...arrPhotos]);
-        setLoading(false);
-        setBtnLoadMore(Math.ceil(totalHits / perPage) > page);
-      }
-    } catch (error) {
-      onFetchError();
-      setLoading(false);
-    }
-  };
+  // const fetchPage = async (search, page) => {
+  //   setLoading(true);
+  //   try {
+  //     console.log('RENDER NEWPAGE');
+  //     const { totalHits, hits } = await fetchPhoto(search, page, perPage);
+  //     if (!hits.length) {
+  //       setBtnLoadMore(false);
+  //       toast.warn(
+  //         'Sorry, there are no images matching your search query. Please try again.'
+  //       );
+  //       setLoading(false);
+  //     } else {
+  //       const arrPhotos = hits.map(
+  //         ({ id, webformatURL, largeImageURL, tags }) => ({
+  //           id,
+  //           largeImageURL,
+  //           tags,
+  //           webformatURL,
+  //         })
+  //       );
+  //       setPhotos([...photos, ...arrPhotos]);
+  //       setLoading(false);
+  //       setBtnLoadMore(Math.ceil(totalHits / perPage) > page);
+  //     }
+  //   } catch (error) {
+  //     onFetchError();
+  //     setLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
+    const fetchPage = async (search, page) => {
+      setLoading(true);
+      try {
+        console.log('RENDER NEWPAGE');
+        const { totalHits, hits } = await fetchPhoto(search, page, perPage);
+        if (!hits.length) {
+          setBtnLoadMore(false);
+          toast.warn(
+            'Sorry, there are no images matching your search query. Please try again.'
+          );
+          setLoading(false);
+        } else {
+          const arrPhotos = hits.map(
+            ({ id, webformatURL, largeImageURL, tags }) => ({
+              id,
+              largeImageURL,
+              tags,
+              webformatURL,
+            })
+          );
+          setPhotos([...photos, ...arrPhotos]);
+          setLoading(false);
+          setBtnLoadMore(Math.ceil(totalHits / perPage) > page);
+        }
+      } catch (error) {
+        onFetchError();
+        setLoading(false);
+      }
+    };
     if (search) {
       fetchPage(search, page);
     }
